@@ -21,40 +21,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -68,6 +34,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="data-wrangling_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="data-wrangling_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="data-wrangling_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="data-wrangling_files/libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="data-wrangling_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 
 
 </head>
@@ -104,86 +72,162 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Loading necessary packages</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.1.4     ✔ readr     2.1.5
-✔ forcats   1.0.0     ✔ stringr   1.5.1
-✔ ggplot2   3.5.1     ✔ tibble    3.2.1
-✔ lubridate 1.9.3     ✔ tidyr     1.3.1
-✔ purrr     1.0.2     
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)   <span class="co"># for creating nicely formatted tables in Quarto</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attaching package: 'kableExtra'
+<div class="cell-output-display">
+<table class="table table-striped caption-top table-sm small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">Customer ID</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Age</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Gender</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Item Purchased</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Category</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Purchase Amount (USD)</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Location</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Size</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Color</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Season</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Review Rating</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Subscription Status</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Payment Method</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Shipping Type</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Discount Applied</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Promo Code Used</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Previous Purchases</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Preferred Payment Method</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Frequency of Purchases</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">55</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Blouse</td>
+<td style="text-align: left;">Clothing</td>
+<td style="text-align: right;">53</td>
+<td style="text-align: left;">Kentucky</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Gray</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: right;">3.1</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Credit Card</td>
+<td style="text-align: left;">Express</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: left;">Venmo</td>
+<td style="text-align: left;">Fortnightly</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Sweater</td>
+<td style="text-align: left;">Clothing</td>
+<td style="text-align: right;">64</td>
+<td style="text-align: left;">Maine</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Maroon</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: right;">3.1</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Bank Transfer</td>
+<td style="text-align: left;">Express</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">Cash</td>
+<td style="text-align: left;">Fortnightly</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jeans</td>
+<td style="text-align: left;">Clothing</td>
+<td style="text-align: right;">73</td>
+<td style="text-align: left;">Massachusetts</td>
+<td style="text-align: left;">S</td>
+<td style="text-align: left;">Maroon</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: right;">3.1</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Cash</td>
+<td style="text-align: left;">Free Shipping</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: left;">Credit Card</td>
+<td style="text-align: left;">Weekly</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Sandals</td>
+<td style="text-align: left;">Footwear</td>
+<td style="text-align: right;">90</td>
+<td style="text-align: left;">Rhode Island</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Maroon</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: right;">3.5</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">PayPal</td>
+<td style="text-align: left;">Next Day Air</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: left;">PayPal</td>
+<td style="text-align: left;">Weekly</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">45</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Blouse</td>
+<td style="text-align: left;">Clothing</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: left;">Oregon</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Turquoise</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: right;">2.7</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Cash</td>
+<td style="text-align: left;">Free Shipping</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: left;">PayPal</td>
+<td style="text-align: left;">Annually</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">46</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Sneakers</td>
+<td style="text-align: left;">Footwear</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: left;">Wyoming</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">White</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: right;">2.9</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Venmo</td>
+<td style="text-align: left;">Standard</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: left;">Venmo</td>
+<td style="text-align: left;">Weekly</td>
+</tr>
+</tbody>
+</table>
 
-The following object is masked from 'package:dplyr':
 
-    group_rows</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)        <span class="co"># for using augment</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Loading required package: carData
-
-Attaching package: 'car'
-
-The following object is masked from 'package:dplyr':
-
-    recode
-
-The following object is masked from 'package:purrr':
-
-    some</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pROC)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Type 'citation("pROC")' for a citation.
-
-Attaching package: 'pROC'
-
-The following objects are masked from 'package:stats':
-
-    cov, smooth, var</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"shopping_trends.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 3900 Columns: 19
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr (14): Gender, Item Purchased, Category, Location, Size, Color, Season, S...
-dbl  (5): Customer ID, Age, Purchase Amount (USD), Review Rating, Previous P...
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(data))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 19
-  `Customer ID`   Age Gender `Item Purchased` Category `Purchase Amount (USD)`
-          &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;            &lt;chr&gt;                      &lt;dbl&gt;
-1             1    55 Male   Blouse           Clothing                      53
-2             2    19 Male   Sweater          Clothing                      64
-3             3    50 Male   Jeans            Clothing                      73
-4             4    21 Male   Sandals          Footwear                      90
-5             5    45 Male   Blouse           Clothing                      49
-6             6    46 Male   Sneakers         Footwear                      20
-# ℹ 13 more variables: Location &lt;chr&gt;, Size &lt;chr&gt;, Color &lt;chr&gt;, Season &lt;chr&gt;,
-#   `Review Rating` &lt;dbl&gt;, `Subscription Status` &lt;chr&gt;, `Payment Method` &lt;chr&gt;,
-#   `Shipping Type` &lt;chr&gt;, `Discount Applied` &lt;chr&gt;, `Promo Code Used` &lt;chr&gt;,
-#   `Previous Purchases` &lt;dbl&gt;, `Preferred Payment Method` &lt;chr&gt;,
-#   `Frequency of Purchases` &lt;chr&gt;</code></pre>
 </div>
 </div>
 <p>There are no missing values and the dataset is overall cleaned. Some of the things we need to account for to make sure we compare apples to apples are:</p>
@@ -196,119 +240,2518 @@ dbl  (5): Customer ID, Age, Purchase Amount (USD), Review Rating, Previous P...
 <li>age - may be one of the further analysis explanatory.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>nrow_before_clean <span class="ot">&lt;-</span> (<span class="fu">nrow</span>(data))</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove specified columns</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>cols_to_remove <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Frequency of Purchases"</span>, <span class="st">"Previous Purchases"</span>, </span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Preferred Payment Method"</span>, <span class="st">"Payment Method"</span>, </span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Review Rating"</span>, <span class="st">"Discount Applied"</span>, <span class="st">"Promo Code Used"</span>)</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">Discount Applied</span><span class="st">`</span> <span class="sc">==</span> <span class="st">'No'</span>, <span class="st">`</span><span class="at">Promo Code Used</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"No"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">all_of</span>(cols_to_remove))</span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(data))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 12
-  `Customer ID`   Age Gender `Item Purchased` Category `Purchase Amount (USD)`
-          &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;            &lt;chr&gt;                      &lt;dbl&gt;
-1          1678    65 Male   Jeans            Clothing                      35
-2          1679    41 Male   Pants            Clothing                      71
-3          1680    60 Male   Dress            Clothing                      52
-4          1681    61 Male   Shoes            Footwear                      37
-5          1682    24 Male   Sneakers         Footwear                      95
-6          1683    65 Male   Socks            Clothing                      97
-# ℹ 6 more variables: Location &lt;chr&gt;, Size &lt;chr&gt;, Color &lt;chr&gt;, Season &lt;chr&gt;,
-#   `Subscription Status` &lt;chr&gt;, `Shipping Type` &lt;chr&gt;</code></pre>
+<pre><code>[1] 3900</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>nrow_after_clean <span class="ot">&lt;-</span> (<span class="fu">nrow</span>(data))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2223</code></pre>
+</div>
 </div>
 <p>The sales taxes correlation was basically not significant and small enough to disregard. Similarly since gender will be similarly distributed across values, we can disregard differences in shipping prices and other things, since the information about it is limited and we expect them to be fairly even between the two genders considered in the study.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read tax data</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>tax_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"LOST_July_2024_Rate_Table.csv"</span>)</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Clean tax data - remove % and convert to numeric</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>tax_data<span class="sc">$</span>Combined_Rate <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">sub</span>(<span class="st">"%"</span>, <span class="st">""</span>, tax_data<span class="sc">$</span>Combined.Rate))</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate median prices by state</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>state_prices <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Location) <span class="sc">|&gt;</span></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">median_price =</span> <span class="fu">median</span>(<span class="st">`</span><span class="at">Purchase Amount (USD)</span><span class="st">`</span>),</span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_transactions =</span> <span class="fu">n</span>()</span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Merge with tax data</span></span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>comparison <span class="ot">&lt;-</span> <span class="fu">merge</span>(state_prices, tax_data, </span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>                  <span class="at">by.x=</span><span class="st">"Location"</span>, <span class="at">by.y=</span><span class="st">"State"</span>)</span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Run linear regression</span></span>
-<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(median_price <span class="sc">~</span> Combined_Rate, <span class="at">data=</span>comparison)</span>
-<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = median_price ~ Combined_Rate, data = comparison)
+<div class="cell-output-display">
+<table class="table table-striped caption-top table-sm small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">term</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">estimate</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">std.error</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">statistic</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">57.1642777</td>
+<td style="text-align: right;">3.0402522</td>
+<td style="text-align: right;">18.8024787</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Combined_Rate</td>
+<td style="text-align: right;">0.3663041</td>
+<td style="text-align: right;">0.4239915</td>
+<td style="text-align: right;">0.8639422</td>
+<td style="text-align: right;">0.3927709</td>
+</tr>
+</tbody>
+</table>
 
-Residuals:
-    Min      1Q  Median      3Q     Max 
--9.8621 -4.5477  0.2599  4.3854 17.1687 
 
-Coefficients:
-              Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)    57.1643     3.0403  18.802   &lt;2e-16 ***
-Combined_Rate   0.3663     0.4240   0.864    0.393    
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 6.521 on 40 degrees of freedom
-Multiple R-squared:  0.01832,   Adjusted R-squared:  -0.006224 
-F-statistic: 0.7464 on 1 and 40 DF,  p-value: 0.3928</code></pre>
 </div>
 </div>
 <p>One thing we definitely want to account for is the different item types. To simplify the analysis we want to separate them into more categories than we are given, since those aren’t thoroughly informative but at the same time we need less unique values for this categorical variable.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># First, let's see all unique items</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>unique_items <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">unique</span>(data<span class="sc">$</span><span class="st">`</span><span class="at">Item.Purchased</span><span class="st">`</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Unknown or uninitialised column: `Item.Purchased`.</code></pre>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data-wrangling_files/figure-html/group_items-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a function to categorize items</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>categorize_items <span class="ot">&lt;-</span> <span class="cf">function</span>(item) {</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  tops <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"T-shirt"</span>, <span class="st">"Blouse"</span>, <span class="st">"Shirt"</span>, <span class="st">"Tank Top"</span>, <span class="st">"Sweater"</span>, <span class="st">"Hoodie"</span>, <span class="st">"Sweatshirt"</span>, <span class="st">"Cardigan"</span>, <span class="st">"Polo"</span>)</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  bottoms <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Pants"</span>, <span class="st">"Jeans"</span>, <span class="st">"Shorts"</span>, <span class="st">"Skirt"</span>, <span class="st">"Leggings"</span>, <span class="st">"Trousers"</span>)</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  full_body <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Dress"</span>, <span class="st">"Suit"</span>, <span class="st">"Jumpsuit"</span>, <span class="st">"Romper"</span>)</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  outerwear <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Jacket"</span>, <span class="st">"Coat"</span>, <span class="st">"Blazer"</span>, <span class="st">"Windbreaker"</span>)</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  accessories <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Belt"</span>, <span class="st">"Scarf"</span>, <span class="st">"Hat"</span>, <span class="st">"Cap"</span>, <span class="st">"Gloves"</span>, <span class="st">"Tie"</span>, <span class="st">"Socks"</span>)</span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  footwear <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Shoes"</span>, <span class="st">"Boots"</span>, <span class="st">"Sandals"</span>, <span class="st">"Sneakers"</span>, <span class="st">"Heels"</span>)</span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  bags <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Backpack"</span>, <span class="st">"Handbag"</span>, <span class="st">"Purse"</span>, <span class="st">"Wallet"</span>, <span class="st">"Tote"</span>)</span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Categorize</span></span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(item <span class="sc">%in%</span> tops) <span class="fu">return</span>(<span class="st">"Tops"</span>)</span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(item <span class="sc">%in%</span> bottoms) <span class="fu">return</span>(<span class="st">"Bottoms"</span>)</span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(item <span class="sc">%in%</span> full_body) <span class="fu">return</span>(<span class="st">"Full Body"</span>)</span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(item <span class="sc">%in%</span> outerwear) <span class="fu">return</span>(<span class="st">"Outerwear"</span>)</span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(item <span class="sc">%in%</span> accessories) <span class="fu">return</span>(<span class="st">"Accessories"</span>)</span>
-<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(item <span class="sc">%in%</span> footwear) <span class="fu">return</span>(<span class="st">"Footwear"</span>)</span>
-<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(item <span class="sc">%in%</span> bags) <span class="fu">return</span>(<span class="st">"Bags"</span>)</span>
-<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="st">"Other"</span>)</span>
-<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply categorization</span></span>
-<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>Item_Category <span class="ot">&lt;-</span> <span class="fu">sapply</span>(data<span class="sc">$</span><span class="st">`</span><span class="at">Item Purchased</span><span class="st">`</span>, categorize_items)</span>
-<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Get summary of new categories</span></span>
-<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>category_summary <span class="ot">&lt;-</span> <span class="fu">table</span>(data<span class="sc">$</span>Item_Category)</span>
-<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>category_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">Category =</span> <span class="fu">names</span>(category_summary),</span>
-<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">Count =</span> <span class="fu">as.numeric</span>(category_summary),</span>
-<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">Percentage =</span> <span class="fu">round</span>(<span class="fu">as.numeric</span>(<span class="fu">prop.table</span>(category_summary)) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>)</span>
-<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<p>Does season is what I think it is - the season of the item style or is it when it was purchased? One thing that came up - idk why sometimes i need to call it as Price.Paid vs <code>Price Paid</code></p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-striped caption-top table-sm small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">Customer ID</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Age</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Gender</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Item Purchased</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Category</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Purchase Amount (USD)</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Location</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Size</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Color</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Season</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Item_Category</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1684</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">57</td>
+<td style="text-align: left;">Arkansas</td>
+<td style="text-align: left;">S</td>
+<td style="text-align: left;">Lavender</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1691</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: left;">Nevada</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Black</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1694</td>
+<td style="text-align: right;">63</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">88</td>
+<td style="text-align: left;">Tennessee</td>
+<td style="text-align: left;">XL</td>
+<td style="text-align: left;">Olive</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1714</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: left;">Missouri</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Pink</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1727</td>
+<td style="text-align: right;">57</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">28</td>
+<td style="text-align: left;">Indiana</td>
+<td style="text-align: left;">S</td>
+<td style="text-align: left;">Olive</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1748</td>
+<td style="text-align: right;">61</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: left;">New Hampshire</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Yellow</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1774</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">92</td>
+<td style="text-align: left;">West Virginia</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Blue</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1776</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: left;">Iowa</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Violet</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1777</td>
+<td style="text-align: right;">56</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">64</td>
+<td style="text-align: left;">Arizona</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Cyan</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1787</td>
+<td style="text-align: right;">45</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: left;">Maryland</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Brown</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1801</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">58</td>
+<td style="text-align: left;">Mississippi</td>
+<td style="text-align: left;">XL</td>
+<td style="text-align: left;">Indigo</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1809</td>
+<td style="text-align: right;">67</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">71</td>
+<td style="text-align: left;">Tennessee</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Lavender</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1829</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">80</td>
+<td style="text-align: left;">New Hampshire</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Gray</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1844</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">76</td>
+<td style="text-align: left;">Kentucky</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Charcoal</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1893</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: left;">California</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Blue</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1925</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">63</td>
+<td style="text-align: left;">Michigan</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Gray</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1935</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">43</td>
+<td style="text-align: left;">Michigan</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Gold</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1967</td>
+<td style="text-align: right;">67</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">95</td>
+<td style="text-align: left;">Indiana</td>
+<td style="text-align: left;">XL</td>
+<td style="text-align: left;">Purple</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1976</td>
+<td style="text-align: right;">53</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">77</td>
+<td style="text-align: left;">Illinois</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Turquoise</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1987</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: left;">Arkansas</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Green</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2042</td>
+<td style="text-align: right;">66</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: left;">New York</td>
+<td style="text-align: left;">S</td>
+<td style="text-align: left;">Lavender</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2063</td>
+<td style="text-align: right;">54</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">63</td>
+<td style="text-align: left;">South Carolina</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Silver</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2072</td>
+<td style="text-align: right;">69</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">South Carolina</td>
+<td style="text-align: left;">S</td>
+<td style="text-align: left;">Yellow</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2082</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">78</td>
+<td style="text-align: left;">Alabama</td>
+<td style="text-align: left;">S</td>
+<td style="text-align: left;">Cyan</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2090</td>
+<td style="text-align: right;">37</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">57</td>
+<td style="text-align: left;">Maryland</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Gold</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2117</td>
+<td style="text-align: right;">67</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: left;">Kansas</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Teal</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2123</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: left;">Virginia</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Teal</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2124</td>
+<td style="text-align: right;">54</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">71</td>
+<td style="text-align: left;">Nebraska</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Cyan</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2126</td>
+<td style="text-align: right;">57</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">87</td>
+<td style="text-align: left;">New Hampshire</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Beige</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2129</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: left;">New Mexico</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Cyan</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2167</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">88</td>
+<td style="text-align: left;">New Jersey</td>
+<td style="text-align: left;">S</td>
+<td style="text-align: left;">Purple</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2170</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: left;">Florida</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Brown</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2181</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">37</td>
+<td style="text-align: left;">Connecticut</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Yellow</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2189</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">54</td>
+<td style="text-align: left;">California</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Brown</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2232</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: left;">Utah</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Beige</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2242</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">77</td>
+<td style="text-align: left;">Maryland</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Purple</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2247</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">96</td>
+<td style="text-align: left;">Hawaii</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Cyan</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2256</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: left;">Michigan</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Teal</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2266</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">94</td>
+<td style="text-align: left;">Montana</td>
+<td style="text-align: left;">XL</td>
+<td style="text-align: left;">Yellow</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2273</td>
+<td style="text-align: right;">29</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">38</td>
+<td style="text-align: left;">Maine</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Charcoal</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2274</td>
+<td style="text-align: right;">55</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">96</td>
+<td style="text-align: left;">New Mexico</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Silver</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2292</td>
+<td style="text-align: right;">28</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: left;">Ohio</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Indigo</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2300</td>
+<td style="text-align: right;">64</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">57</td>
+<td style="text-align: left;">Idaho</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Violet</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2301</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">88</td>
+<td style="text-align: left;">Pennsylvania</td>
+<td style="text-align: left;">XL</td>
+<td style="text-align: left;">Lavender</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2318</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: left;">New Jersey</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Purple</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2323</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">84</td>
+<td style="text-align: left;">Connecticut</td>
+<td style="text-align: left;">S</td>
+<td style="text-align: left;">Lavender</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2325</td>
+<td style="text-align: right;">59</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">28</td>
+<td style="text-align: left;">Oregon</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Brown</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2336</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">37</td>
+<td style="text-align: left;">Idaho</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Black</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2342</td>
+<td style="text-align: right;">56</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: left;">Connecticut</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Teal</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2347</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">67</td>
+<td style="text-align: left;">New Mexico</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Brown</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2390</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">87</td>
+<td style="text-align: left;">Kansas</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Violet</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2399</td>
+<td style="text-align: right;">65</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">81</td>
+<td style="text-align: left;">Florida</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Orange</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2413</td>
+<td style="text-align: right;">53</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: left;">Oregon</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Pink</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2416</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: left;">Hawaii</td>
+<td style="text-align: left;">XL</td>
+<td style="text-align: left;">Lavender</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2421</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">87</td>
+<td style="text-align: left;">North Carolina</td>
+<td style="text-align: left;">S</td>
+<td style="text-align: left;">Green</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2427</td>
+<td style="text-align: right;">70</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: left;">Florida</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Olive</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2428</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: left;">Oregon</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Purple</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2431</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">North Dakota</td>
+<td style="text-align: left;">XL</td>
+<td style="text-align: left;">White</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2433</td>
+<td style="text-align: right;">59</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">66</td>
+<td style="text-align: left;">Hawaii</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Peach</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2450</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">56</td>
+<td style="text-align: left;">Alabama</td>
+<td style="text-align: left;">S</td>
+<td style="text-align: left;">Violet</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2465</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">84</td>
+<td style="text-align: left;">Hawaii</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Teal</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2490</td>
+<td style="text-align: right;">66</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: left;">South Dakota</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Green</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2499</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: left;">Massachusetts</td>
+<td style="text-align: left;">S</td>
+<td style="text-align: left;">Green</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2511</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: left;">South Dakota</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Purple</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2520</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">90</td>
+<td style="text-align: left;">Michigan</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Magenta</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2521</td>
+<td style="text-align: right;">64</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">56</td>
+<td style="text-align: left;">Illinois</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Magenta</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2525</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">59</td>
+<td style="text-align: left;">Kansas</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Purple</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2536</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">80</td>
+<td style="text-align: left;">Vermont</td>
+<td style="text-align: left;">S</td>
+<td style="text-align: left;">Purple</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2538</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: left;">Maine</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Purple</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2548</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">97</td>
+<td style="text-align: left;">Mississippi</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Beige</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2550</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: left;">Virginia</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Red</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2587</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">28</td>
+<td style="text-align: left;">Maine</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Yellow</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2592</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">61</td>
+<td style="text-align: left;">New Mexico</td>
+<td style="text-align: left;">S</td>
+<td style="text-align: left;">Olive</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2603</td>
+<td style="text-align: right;">65</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: left;">South Carolina</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Black</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2609</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">68</td>
+<td style="text-align: left;">Mississippi</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Orange</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2612</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">99</td>
+<td style="text-align: left;">Michigan</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Maroon</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2615</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">65</td>
+<td style="text-align: left;">North Dakota</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Turquoise</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2627</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">46</td>
+<td style="text-align: left;">Rhode Island</td>
+<td style="text-align: left;">XL</td>
+<td style="text-align: left;">Silver</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2637</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: left;">Utah</td>
+<td style="text-align: left;">S</td>
+<td style="text-align: left;">Magenta</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2655</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">70</td>
+<td style="text-align: left;">Idaho</td>
+<td style="text-align: left;">S</td>
+<td style="text-align: left;">Pink</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2669</td>
+<td style="text-align: right;">59</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">75</td>
+<td style="text-align: left;">Texas</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Black</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2697</td>
+<td style="text-align: right;">57</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: left;">South Dakota</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">White</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2698</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: left;">Delaware</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Red</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2706</td>
+<td style="text-align: right;">65</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">81</td>
+<td style="text-align: left;">Washington</td>
+<td style="text-align: left;">S</td>
+<td style="text-align: left;">Turquoise</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2711</td>
+<td style="text-align: right;">69</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: left;">Wisconsin</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Purple</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2713</td>
+<td style="text-align: right;">37</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">95</td>
+<td style="text-align: left;">North Dakota</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Brown</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2714</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">57</td>
+<td style="text-align: left;">Mississippi</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Magenta</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2749</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">98</td>
+<td style="text-align: left;">Virginia</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Turquoise</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2750</td>
+<td style="text-align: right;">64</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">53</td>
+<td style="text-align: left;">Vermont</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Cyan</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2772</td>
+<td style="text-align: right;">58</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: left;">Maryland</td>
+<td style="text-align: left;">S</td>
+<td style="text-align: left;">Beige</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2795</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: left;">New York</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Gold</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2797</td>
+<td style="text-align: right;">55</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">73</td>
+<td style="text-align: left;">Oklahoma</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Red</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2803</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">Hawaii</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Red</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2812</td>
+<td style="text-align: right;">69</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">89</td>
+<td style="text-align: left;">Ohio</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Blue</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2835</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">43</td>
+<td style="text-align: left;">Texas</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Indigo</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2839</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: left;">Maine</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Blue</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2843</td>
+<td style="text-align: right;">28</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">Arizona</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Green</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2850</td>
+<td style="text-align: right;">56</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: left;">New Hampshire</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Gold</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2857</td>
+<td style="text-align: right;">65</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: left;">Iowa</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Indigo</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2862</td>
+<td style="text-align: right;">66</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">54</td>
+<td style="text-align: left;">Maryland</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Teal</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2863</td>
+<td style="text-align: right;">68</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">75</td>
+<td style="text-align: left;">Hawaii</td>
+<td style="text-align: left;">S</td>
+<td style="text-align: left;">Violet</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2898</td>
+<td style="text-align: right;">43</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">59</td>
+<td style="text-align: left;">Montana</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Violet</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2907</td>
+<td style="text-align: right;">58</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: left;">Virginia</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Indigo</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2914</td>
+<td style="text-align: right;">43</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">83</td>
+<td style="text-align: left;">Wyoming</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Cyan</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2961</td>
+<td style="text-align: right;">57</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: left;">Indiana</td>
+<td style="text-align: left;">S</td>
+<td style="text-align: left;">Olive</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2965</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: left;">Ohio</td>
+<td style="text-align: left;">S</td>
+<td style="text-align: left;">White</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2973</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: left;">New York</td>
+<td style="text-align: left;">S</td>
+<td style="text-align: left;">Indigo</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2977</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">97</td>
+<td style="text-align: left;">Nebraska</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Silver</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2994</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: left;">Kansas</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Indigo</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3002</td>
+<td style="text-align: right;">29</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">29</td>
+<td style="text-align: left;">Montana</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Charcoal</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3020</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: left;">Utah</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Yellow</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3043</td>
+<td style="text-align: right;">53</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: left;">South Dakota</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Turquoise</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3051</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">76</td>
+<td style="text-align: left;">Kentucky</td>
+<td style="text-align: left;">S</td>
+<td style="text-align: left;">Green</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3061</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">80</td>
+<td style="text-align: left;">California</td>
+<td style="text-align: left;">S</td>
+<td style="text-align: left;">Charcoal</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3066</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">59</td>
+<td style="text-align: left;">North Dakota</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Beige</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3103</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">85</td>
+<td style="text-align: left;">South Dakota</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Green</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3110</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">92</td>
+<td style="text-align: left;">Illinois</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Gray</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3117</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">66</td>
+<td style="text-align: left;">Montana</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Gray</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3126</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: left;">Oregon</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Lavender</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3129</td>
+<td style="text-align: right;">65</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: left;">Arkansas</td>
+<td style="text-align: left;">S</td>
+<td style="text-align: left;">Indigo</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3132</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">59</td>
+<td style="text-align: left;">North Dakota</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Peach</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3138</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: left;">Louisiana</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Turquoise</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3166</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">92</td>
+<td style="text-align: left;">Hawaii</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Lavender</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3182</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: left;">Montana</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Charcoal</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3204</td>
+<td style="text-align: right;">63</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">29</td>
+<td style="text-align: left;">New Jersey</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Teal</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3205</td>
+<td style="text-align: right;">57</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">92</td>
+<td style="text-align: left;">New Mexico</td>
+<td style="text-align: left;">XL</td>
+<td style="text-align: left;">Lavender</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3216</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">90</td>
+<td style="text-align: left;">Rhode Island</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Magenta</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3220</td>
+<td style="text-align: right;">57</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: left;">Kansas</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">White</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3251</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">90</td>
+<td style="text-align: left;">Minnesota</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Teal</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3252</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: left;">Nevada</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Gold</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3267</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">74</td>
+<td style="text-align: left;">Alabama</td>
+<td style="text-align: left;">S</td>
+<td style="text-align: left;">Gray</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3284</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: left;">North Carolina</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Purple</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3287</td>
+<td style="text-align: right;">45</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">67</td>
+<td style="text-align: left;">Illinois</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Pink</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3291</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">82</td>
+<td style="text-align: left;">North Dakota</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Black</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3294</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">91</td>
+<td style="text-align: left;">West Virginia</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Gold</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3299</td>
+<td style="text-align: right;">65</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">73</td>
+<td style="text-align: left;">New Mexico</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Brown</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3307</td>
+<td style="text-align: right;">63</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: left;">Colorado</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Orange</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3311</td>
+<td style="text-align: right;">45</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: left;">Iowa</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Pink</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3319</td>
+<td style="text-align: right;">45</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">46</td>
+<td style="text-align: left;">North Dakota</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Olive</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3322</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">Maine</td>
+<td style="text-align: left;">S</td>
+<td style="text-align: left;">Charcoal</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3338</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: left;">Arizona</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Blue</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3342</td>
+<td style="text-align: right;">55</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: left;">Connecticut</td>
+<td style="text-align: left;">XL</td>
+<td style="text-align: left;">Olive</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3343</td>
+<td style="text-align: right;">66</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">81</td>
+<td style="text-align: left;">New Jersey</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Violet</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3361</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">81</td>
+<td style="text-align: left;">Minnesota</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Maroon</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3384</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">43</td>
+<td style="text-align: left;">Delaware</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Pink</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3418</td>
+<td style="text-align: right;">54</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: left;">Massachusetts</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Blue</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3419</td>
+<td style="text-align: right;">53</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: left;">South Carolina</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Beige</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3423</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">91</td>
+<td style="text-align: left;">New York</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Beige</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3438</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: left;">Oklahoma</td>
+<td style="text-align: left;">S</td>
+<td style="text-align: left;">Green</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3449</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">28</td>
+<td style="text-align: left;">Kentucky</td>
+<td style="text-align: left;">S</td>
+<td style="text-align: left;">Yellow</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3453</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: left;">Oklahoma</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Indigo</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3465</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">59</td>
+<td style="text-align: left;">Utah</td>
+<td style="text-align: left;">S</td>
+<td style="text-align: left;">Peach</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3471</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">69</td>
+<td style="text-align: left;">West Virginia</td>
+<td style="text-align: left;">S</td>
+<td style="text-align: left;">Olive</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3543</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">28</td>
+<td style="text-align: left;">Idaho</td>
+<td style="text-align: left;">S</td>
+<td style="text-align: left;">Olive</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3558</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: left;">Nevada</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Peach</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3576</td>
+<td style="text-align: right;">61</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">95</td>
+<td style="text-align: left;">Kentucky</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Violet</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3592</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">89</td>
+<td style="text-align: left;">South Dakota</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Gold</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3611</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">86</td>
+<td style="text-align: left;">Texas</td>
+<td style="text-align: left;">XL</td>
+<td style="text-align: left;">Green</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3640</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: left;">Illinois</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Brown</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3642</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">45</td>
+<td style="text-align: left;">New York</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Cyan</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3654</td>
+<td style="text-align: right;">67</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: left;">Minnesota</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Blue</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3657</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">67</td>
+<td style="text-align: left;">North Dakota</td>
+<td style="text-align: left;">XL</td>
+<td style="text-align: left;">Cyan</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3665</td>
+<td style="text-align: right;">63</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">68</td>
+<td style="text-align: left;">Missouri</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Turquoise</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3680</td>
+<td style="text-align: right;">53</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">91</td>
+<td style="text-align: left;">Idaho</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Violet</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3693</td>
+<td style="text-align: right;">59</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: left;">Alabama</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Turquoise</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3722</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: left;">Connecticut</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Pink</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3723</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: left;">Kentucky</td>
+<td style="text-align: left;">XL</td>
+<td style="text-align: left;">Yellow</td>
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3729</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: left;">Vermont</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Red</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3747</td>
+<td style="text-align: right;">53</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">99</td>
+<td style="text-align: left;">Idaho</td>
+<td style="text-align: left;">XL</td>
+<td style="text-align: left;">Cyan</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3753</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">81</td>
+<td style="text-align: left;">Washington</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Pink</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3783</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">45</td>
+<td style="text-align: left;">Alabama</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Orange</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3800</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: left;">Oklahoma</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Violet</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3817</td>
+<td style="text-align: right;">29</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">86</td>
+<td style="text-align: left;">Maryland</td>
+<td style="text-align: left;">S</td>
+<td style="text-align: left;">Silver</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3827</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: left;">Montana</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Gray</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3834</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">93</td>
+<td style="text-align: left;">Arizona</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Gray</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3843</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">84</td>
+<td style="text-align: left;">Colorado</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Lavender</td>
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3862</td>
+<td style="text-align: right;">64</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">57</td>
+<td style="text-align: left;">Wyoming</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Yellow</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3868</td>
+<td style="text-align: right;">46</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: left;">Maryland</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Lavender</td>
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3870</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Coat</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">64</td>
+<td style="text-align: left;">Arizona</td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">Cyan</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3873</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: left;">Female</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: left;">Outerwear</td>
+<td style="text-align: right;">94</td>
+<td style="text-align: left;">New Hampshire</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Green</td>
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Outerwear</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+<div class="cell-output-display">
+<table class="table table-striped table-hover caption-top table-sm small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Season</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Item Purchased</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">count</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Socks</td>
+<td style="text-align: right;">33</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Skirt</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Handbag</td>
+<td style="text-align: right;">30</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Fall</td>
+<td style="text-align: left;">Jacket</td>
+<td style="text-align: right;">30</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Sandals</td>
+<td style="text-align: right;">32</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Sweater</td>
+<td style="text-align: right;">32</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Spring</td>
+<td style="text-align: left;">Blouse</td>
+<td style="text-align: right;">30</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Blouse</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Dress</td>
+<td style="text-align: right;">28</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Jewelry</td>
+<td style="text-align: right;">28</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Scarf</td>
+<td style="text-align: right;">28</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Summer</td>
+<td style="text-align: left;">Socks</td>
+<td style="text-align: right;">28</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Sunglasses</td>
+<td style="text-align: right;">32</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Shirt</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Winter</td>
+<td style="text-align: left;">Socks</td>
+<td style="text-align: right;">28</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<p>Seems like the season might be impacting data not in the way that we’d expect. For now, just still treat season as an explanatory variable.</p>
+<p>Now that we have all settled - look at the data again:</p>
+<div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 2,223 × 13
+<pre><code># A tibble: 2,223 × 11
    `Customer ID`   Age Gender `Item Purchased` Category   Purchase Amount (USD…¹
            &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;            &lt;chr&gt;                       &lt;dbl&gt;
  1          1678    65 Male   Jeans            Clothing                       35
@@ -323,89 +2766,23 @@ F-statistic: 0.7464 on 1 and 40 DF,  p-value: 0.3928</code></pre>
 10          1687    22 Male   Gloves           Accessori…                     75
 # ℹ 2,213 more rows
 # ℹ abbreviated name: ¹​`Purchase Amount (USD)`
-# ℹ 7 more variables: Location &lt;chr&gt;, Size &lt;chr&gt;, Color &lt;chr&gt;, Season &lt;chr&gt;,
-#   `Subscription Status` &lt;chr&gt;, `Shipping Type` &lt;chr&gt;, Item_Category &lt;chr&gt;</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a visualization</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(category_df, <span class="fu">aes</span>(<span class="at">x =</span> Count, <span class="at">y =</span> Category, <span class="at">fill =</span> Category)) <span class="sc">+</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribution of Item Categories"</span>,</span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Category"</span>,</span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Count"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="data-wrangling_files/figure-html/group_items-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
+# ℹ 5 more variables: Location &lt;chr&gt;, Size &lt;chr&gt;, Color &lt;chr&gt;, Season &lt;chr&gt;,
+#   Item_Category &lt;chr&gt;</code></pre>
 </div>
 </div>
-</div>
-<p>Does season is what I think it is - the season of the item style or is it when it was purchased? One thing that came up - idk why sometimes i need to call it as Price.Paid vs <code>Price Paid</code></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span> <span class="fu">filter</span>(Category <span class="sc">==</span> <span class="st">"Outerwear"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 180 × 13
-   `Customer ID`   Age Gender `Item Purchased` Category  `Purchase Amount (USD)`
-           &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;            &lt;chr&gt;                       &lt;dbl&gt;
- 1          1684    23 Male   Coat             Outerwear                      57
- 2          1691    40 Male   Coat             Outerwear                      30
- 3          1694    63 Male   Jacket           Outerwear                      88
- 4          1714    49 Male   Jacket           Outerwear                      22
- 5          1727    57 Male   Coat             Outerwear                      28
- 6          1748    61 Male   Coat             Outerwear                      23
- 7          1774    21 Male   Coat             Outerwear                      92
- 8          1776    18 Male   Jacket           Outerwear                      47
- 9          1777    56 Male   Jacket           Outerwear                      64
-10          1787    45 Male   Jacket           Outerwear                      34
-# ℹ 170 more rows
-# ℹ 7 more variables: Location &lt;chr&gt;, Size &lt;chr&gt;, Color &lt;chr&gt;, Season &lt;chr&gt;,
-#   `Subscription Status` &lt;chr&gt;, `Shipping Type` &lt;chr&gt;, Item_Category &lt;chr&gt;</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Analyze by Season</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>season_item_analysis <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a> <span class="fu">group_by</span>(Season, <span class="st">`</span><span class="at">Item Purchased</span><span class="st">`</span>) <span class="sc">|&gt;</span></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a> <span class="fu">summarise</span>(</span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>   <span class="at">count =</span> <span class="fu">n</span>(),</span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>   <span class="at">.groups =</span> <span class="st">'drop'</span></span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a> ) <span class="sc">|&gt;</span></span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a> <span class="fu">arrange</span>(Season, <span class="fu">desc</span>(count))</span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Get top items for each season</span></span>
-<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>top_items_by_season <span class="ot">&lt;-</span> season_item_analysis <span class="sc">|&gt;</span></span>
-<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a> <span class="fu">group_by</span>(Season) <span class="sc">|&gt;</span></span>
-<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a> <span class="fu">slice_max</span>(<span class="at">order_by =</span> count, <span class="at">n =</span> <span class="dv">3</span>)</span>
-<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"Top 3 Most Popular Items by Season:"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "Top 3 Most Popular Items by Season:"</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(top_items_by_season)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 15 × 3
-# Groups:   Season [4]
-   Season `Item Purchased` count
-   &lt;chr&gt;  &lt;chr&gt;            &lt;int&gt;
- 1 Fall   Socks               33
- 2 Fall   Skirt               31
- 3 Fall   Handbag             30
- 4 Fall   Jacket              30
- 5 Spring Sandals             32
- 6 Spring Sweater             32
- 7 Spring Blouse              30
- 8 Summer Blouse              31
- 9 Summer Dress               28
-10 Summer Jewelry             28
-11 Summer Scarf               28
-12 Summer Socks               28
-13 Winter Sunglasses          32
-14 Winter Shirt               31
-15 Winter Socks               28</code></pre>
+<pre><code>
+   L    M    S   XL 
+ 596 1013  362  252 </code></pre>
 </div>
 </div>
-<p>Seems like the season might be impacting data not in the way that we’d expect. For now, just still treat season as an explanatory variable.</p>
+<p>Our primary question is whether the gender is very important for when buying XL, L clothes. To account for confounding variables - the model explanatory are: item types, season, location, age, color(pink tax?) specifically for pink??</p>
+<ul>
+<li>prices - response variable? how to measure the chances that the same thing for a man will be cheaper? Multiple regression?</li>
+<li>season - one of key explanatory</li>
+<li>age - may be one of the further analysis explanatory.</li>
+</ul>
 
 </main>
 <!-- /main column -->

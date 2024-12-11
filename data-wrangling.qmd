@@ -5,6 +5,11 @@ format: html
 ---
 
 ```{r load_lib}
+#| message: false
+#| warning: false
+#| include: false
+#| echo: false
+
 # Loading necessary packages
 library(tidyverse)
 library(kableExtra)   # for creating nicely formatted tables in Quarto
@@ -17,8 +22,14 @@ library(pROC)
 ```
 
 ```{r load_data}
-data <- read_csv("shopping_trends.csv")
-print(head(data))
+#| message: false
+#| warning: false
+#| echo: false
+
+raw_data <- read_csv("shopping_trends.csv")
+head(raw_data) |>
+  kable() |>
+  kable_styling(bootstrap_options = c("striped"))
 ```
 
 There are no missing values and the dataset is overall cleaned. Some of the things we need to account for to make sure we compare apples to apples are:
@@ -31,24 +42,35 @@ There are no missing values and the dataset is overall cleaned. Some of the thin
 - age - may be one of the further analysis explanatory.
 
 ```{r relevant_vars}
-nrow_before_clean <- (nrow(data))
+#| message: false
+#| warning: false
+#| echo: false
+
+nrow_before_clean <- (nrow(raw_data))
 
 # Remove specified columns
 cols_to_remove <- c("Frequency of Purchases", "Previous Purchases", 
                   "Preferred Payment Method", "Payment Method", 
-                  "Review Rating", "Discount Applied", "Promo Code Used")
+                  "Review Rating", "Discount Applied", "Promo Code Used", 
+                  "Subscription Status", "Shipping Type")
 
-data <- data |>
+data <- raw_data |>
   filter(`Discount Applied` == 'No', `Promo Code Used` == "No") |>
   select(-all_of(cols_to_remove))
 
-print(head(data))
 nrow_after_clean <- (nrow(data))
+
+print(nrow_before_clean)
+print(nrow_after_clean)
 ```
 
 The sales taxes correlation was basically not significant and small enough to disregard. Similarly since gender will be similarly distributed across values, we can disregard differences in shipping prices and other things, since the information about it is limited and we expect them to be fairly even between the two genders considered in the study.
 
 ```{r sales_taxes}
+#| message: false
+#| warning: false
+#| echo: false
+
 # Read tax data
 tax_data <- read.csv("LOST_July_2024_Rate_Table.csv")
 
@@ -69,11 +91,18 @@ comparison <- merge(state_prices, tax_data,
 
 # Run linear regression
 model <- lm(median_price ~ Combined_Rate, data=comparison)
-summary(model)
+
+tidy(model) %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped"))
 ```
 One thing we definitely want to account for is the different item types. To simplify the analysis we want to separate them into more categories than we are given, since those aren't thoroughly informative but at the same time we need less unique values for this categorical variable.
 
 ```{r group_items}
+#| message: false
+#| warning: false
+#| echo: false
+
 # First, let's see all unique items
 unique_items <- sort(unique(data$`Item.Purchased`))
 
@@ -109,9 +138,6 @@ category_df <- data.frame(
   Percentage = round(as.numeric(prop.table(category_summary)) * 100, 2)
 )
 
-data
-# Create a visualization
-library(ggplot2)
 ggplot(category_df, aes(x = Count, y = Category, fill = Category)) +
   geom_bar(stat = "identity") +
   coord_flip() +
@@ -125,7 +151,14 @@ Does season is what I think it is - the season of the item style or is it when i
 One thing that came up - idk why sometimes i need to call it as Price.Paid vs `Price Paid`
 
 ```{r season}
-data |> filter(Category == "Outerwear")
+#| message: false
+#| warning: false
+#| echo: false
+
+data |> filter(Category == "Outerwear") |>
+  kable() |>
+  kable_styling(bootstrap_options = c("striped"))
+
 
 # Analyze by Season
 season_item_analysis <- data |>
@@ -141,8 +174,36 @@ top_items_by_season <- season_item_analysis |>
  group_by(Season) |>
  slice_max(order_by = count, n = 3)
 
-print("Top 3 Most Popular Items by Season:")
-print(top_items_by_season)
+top_items_by_season |>
+  kable() |>
+  kable_styling(bootstrap_options = c("striped", "hover"))
+
+
 ```
 
 Seems like the season might be impacting data not in the way that we'd expect. For now, just still treat season as an explanatory variable.
+
+
+Now that we have all settled - look at the data again:
+
+```{r draft}
+#| message: false
+#| warning: false
+#| echo: false
+
+data
+```
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+
+table(data$Size)
+```
+
+Our primary question is whether the gender is very important for when buying XL, L clothes. To account for confounding variables - 
+the model explanatory are: item types, season, location, age, color(pink tax?) specifically for pink??
+
+- prices - response variable? how to measure the chances that the same thing for a man will be cheaper? Multiple regression?
+- season - one of key explanatory
+- age - may be one of the further analysis explanatory.
