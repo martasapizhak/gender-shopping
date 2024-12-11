@@ -168,23 +168,17 @@ dbl  (5): Customer ID, Age, Purchase Amount (USD), Review Rating, Previous P...
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(data))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 3,900 × 19
-   `Customer ID`   Age Gender `Item Purchased` Category   Purchase Amount (USD…¹
-           &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;            &lt;chr&gt;                       &lt;dbl&gt;
- 1             1    55 Male   Blouse           Clothing                       53
- 2             2    19 Male   Sweater          Clothing                       64
- 3             3    50 Male   Jeans            Clothing                       73
- 4             4    21 Male   Sandals          Footwear                       90
- 5             5    45 Male   Blouse           Clothing                       49
- 6             6    46 Male   Sneakers         Footwear                       20
- 7             7    63 Male   Shirt            Clothing                       85
- 8             8    27 Male   Shorts           Clothing                       34
- 9             9    26 Male   Coat             Outerwear                      97
-10            10    57 Male   Handbag          Accessori…                     31
-# ℹ 3,890 more rows
-# ℹ abbreviated name: ¹​`Purchase Amount (USD)`
+<pre><code># A tibble: 6 × 19
+  `Customer ID`   Age Gender `Item Purchased` Category `Purchase Amount (USD)`
+          &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;            &lt;chr&gt;                      &lt;dbl&gt;
+1             1    55 Male   Blouse           Clothing                      53
+2             2    19 Male   Sweater          Clothing                      64
+3             3    50 Male   Jeans            Clothing                      73
+4             4    21 Male   Sandals          Footwear                      90
+5             5    45 Male   Blouse           Clothing                      49
+6             6    46 Male   Sneakers         Footwear                      20
 # ℹ 13 more variables: Location &lt;chr&gt;, Size &lt;chr&gt;, Color &lt;chr&gt;, Season &lt;chr&gt;,
 #   `Review Rating` &lt;dbl&gt;, `Subscription Status` &lt;chr&gt;, `Payment Method` &lt;chr&gt;,
 #   `Shipping Type` &lt;chr&gt;, `Discount Applied` &lt;chr&gt;, `Promo Code Used` &lt;chr&gt;,
@@ -194,37 +188,224 @@ dbl  (5): Customer ID, Age, Purchase Amount (USD), Review Rating, Previous P...
 </div>
 <p>There are no missing values and the dataset is overall cleaned. Some of the things we need to account for to make sure we compare apples to apples are:</p>
 <ul>
-<li>gender</li>
-<li>items and categories</li>
-<li>sales taxes</li>
-<li>size</li>
-<li>prices</li>
-<li>season</li>
-<li>subscription status + delivery type</li>
-<li>discounts and coupons</li>
-<li>age</li>
+<li>gender - one of key explanatory</li>
+<li>items and categories - one of key explanatory - need to group better to lower the number of categ variables</li>
+<li>size - the key explanatory</li>
+<li>prices - response variable? how to measure the chances that the same thing for a man will be cheaper? Multiple regression?</li>
+<li>season - one of key explanatory</li>
+<li>age - may be one of the further analysis explanatory.</li>
 </ul>
-<p>Cols to remove:</p>
-<ul>
-<li>Frequency of Purchases</li>
-<li>Previous Purchases</li>
-<li>Preferred Payment Method</li>
-<li>Payment Method</li>
-<li>Review Rating</li>
-</ul>
-<p>unique(data$Shipping.Type)</p>
-<section id="list-categorical-variables" class="level1">
-<h1>List categorical variables</h1>
-<p>cat_vars &lt;- c( ‘Shipping Type’)</p>
-</section>
-<section id="function-to-get-counts-and-percentages" class="level1">
-<h1>Function to get counts and percentages</h1>
-<p>get_counts &lt;- function(var) { counts &lt;- table(data[[var]]) percentages &lt;- prop.table(counts) * 100 result &lt;- data.frame( Value = names(counts), Count = as.numeric(counts), Percentage = round(as.numeric(percentages), 2) ) result &lt;- result[order(-result$Count),] return(result) }</p>
-</section>
-<section id="apply-to-each-categorical-variable" class="level1">
-<h1>Apply to each categorical variable</h1>
-<p>for(var in cat_vars) { print(paste(“===”, var, “===”)) print(get_counts(var)) }```</p>
-</section>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>nrow_before_clean <span class="ot">&lt;-</span> (<span class="fu">nrow</span>(data))</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove specified columns</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>cols_to_remove <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Frequency of Purchases"</span>, <span class="st">"Previous Purchases"</span>, </span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Preferred Payment Method"</span>, <span class="st">"Payment Method"</span>, </span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Review Rating"</span>, <span class="st">"Discount Applied"</span>, <span class="st">"Promo Code Used"</span>)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">Discount Applied</span><span class="st">`</span> <span class="sc">==</span> <span class="st">'No'</span>, <span class="st">`</span><span class="at">Promo Code Used</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"No"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">all_of</span>(cols_to_remove))</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(data))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 12
+  `Customer ID`   Age Gender `Item Purchased` Category `Purchase Amount (USD)`
+          &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;            &lt;chr&gt;                      &lt;dbl&gt;
+1          1678    65 Male   Jeans            Clothing                      35
+2          1679    41 Male   Pants            Clothing                      71
+3          1680    60 Male   Dress            Clothing                      52
+4          1681    61 Male   Shoes            Footwear                      37
+5          1682    24 Male   Sneakers         Footwear                      95
+6          1683    65 Male   Socks            Clothing                      97
+# ℹ 6 more variables: Location &lt;chr&gt;, Size &lt;chr&gt;, Color &lt;chr&gt;, Season &lt;chr&gt;,
+#   `Subscription Status` &lt;chr&gt;, `Shipping Type` &lt;chr&gt;</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>nrow_after_clean <span class="ot">&lt;-</span> (<span class="fu">nrow</span>(data))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The sales taxes correlation was basically not significant and small enough to disregard. Similarly since gender will be similarly distributed across values, we can disregard differences in shipping prices and other things, since the information about it is limited and we expect them to be fairly even between the two genders considered in the study.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read tax data</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>tax_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"LOST_July_2024_Rate_Table.csv"</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Clean tax data - remove % and convert to numeric</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>tax_data<span class="sc">$</span>Combined_Rate <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">sub</span>(<span class="st">"%"</span>, <span class="st">""</span>, tax_data<span class="sc">$</span>Combined.Rate))</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate median prices by state</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>state_prices <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Location) <span class="sc">|&gt;</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">median_price =</span> <span class="fu">median</span>(<span class="st">`</span><span class="at">Purchase Amount (USD)</span><span class="st">`</span>),</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_transactions =</span> <span class="fu">n</span>()</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Merge with tax data</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>comparison <span class="ot">&lt;-</span> <span class="fu">merge</span>(state_prices, tax_data, </span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>                  <span class="at">by.x=</span><span class="st">"Location"</span>, <span class="at">by.y=</span><span class="st">"State"</span>)</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Run linear regression</span></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(median_price <span class="sc">~</span> Combined_Rate, <span class="at">data=</span>comparison)</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = median_price ~ Combined_Rate, data = comparison)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-9.8621 -4.5477  0.2599  4.3854 17.1687 
+
+Coefficients:
+              Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    57.1643     3.0403  18.802   &lt;2e-16 ***
+Combined_Rate   0.3663     0.4240   0.864    0.393    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 6.521 on 40 degrees of freedom
+Multiple R-squared:  0.01832,   Adjusted R-squared:  -0.006224 
+F-statistic: 0.7464 on 1 and 40 DF,  p-value: 0.3928</code></pre>
+</div>
+</div>
+<p>One thing we definitely want to account for is the different item types. To simplify the analysis we want to separate them into more categories than we are given, since those aren’t thoroughly informative but at the same time we need less unique values for this categorical variable.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># First, let's see all unique items</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>unique_items <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">unique</span>(data<span class="sc">$</span><span class="st">`</span><span class="at">Item.Purchased</span><span class="st">`</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Unknown or uninitialised column: `Item.Purchased`.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a function to categorize items</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>categorize_items <span class="ot">&lt;-</span> <span class="cf">function</span>(item) {</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  tops <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"T-shirt"</span>, <span class="st">"Blouse"</span>, <span class="st">"Shirt"</span>, <span class="st">"Tank Top"</span>, <span class="st">"Sweater"</span>, <span class="st">"Hoodie"</span>, <span class="st">"Sweatshirt"</span>, <span class="st">"Cardigan"</span>, <span class="st">"Polo"</span>)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  bottoms <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Pants"</span>, <span class="st">"Jeans"</span>, <span class="st">"Shorts"</span>, <span class="st">"Skirt"</span>, <span class="st">"Leggings"</span>, <span class="st">"Trousers"</span>)</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  full_body <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Dress"</span>, <span class="st">"Suit"</span>, <span class="st">"Jumpsuit"</span>, <span class="st">"Romper"</span>)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  outerwear <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Jacket"</span>, <span class="st">"Coat"</span>, <span class="st">"Blazer"</span>, <span class="st">"Windbreaker"</span>)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  accessories <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Belt"</span>, <span class="st">"Scarf"</span>, <span class="st">"Hat"</span>, <span class="st">"Cap"</span>, <span class="st">"Gloves"</span>, <span class="st">"Tie"</span>, <span class="st">"Socks"</span>)</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  footwear <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Shoes"</span>, <span class="st">"Boots"</span>, <span class="st">"Sandals"</span>, <span class="st">"Sneakers"</span>, <span class="st">"Heels"</span>)</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  bags <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Backpack"</span>, <span class="st">"Handbag"</span>, <span class="st">"Purse"</span>, <span class="st">"Wallet"</span>, <span class="st">"Tote"</span>)</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Categorize</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(item <span class="sc">%in%</span> tops) <span class="fu">return</span>(<span class="st">"Tops"</span>)</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(item <span class="sc">%in%</span> bottoms) <span class="fu">return</span>(<span class="st">"Bottoms"</span>)</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(item <span class="sc">%in%</span> full_body) <span class="fu">return</span>(<span class="st">"Full Body"</span>)</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(item <span class="sc">%in%</span> outerwear) <span class="fu">return</span>(<span class="st">"Outerwear"</span>)</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(item <span class="sc">%in%</span> accessories) <span class="fu">return</span>(<span class="st">"Accessories"</span>)</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(item <span class="sc">%in%</span> footwear) <span class="fu">return</span>(<span class="st">"Footwear"</span>)</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(item <span class="sc">%in%</span> bags) <span class="fu">return</span>(<span class="st">"Bags"</span>)</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="st">"Other"</span>)</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply categorization</span></span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>Item_Category <span class="ot">&lt;-</span> <span class="fu">sapply</span>(data<span class="sc">$</span><span class="st">`</span><span class="at">Item Purchased</span><span class="st">`</span>, categorize_items)</span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Get summary of new categories</span></span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>category_summary <span class="ot">&lt;-</span> <span class="fu">table</span>(data<span class="sc">$</span>Item_Category)</span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>category_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">Category =</span> <span class="fu">names</span>(category_summary),</span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">Count =</span> <span class="fu">as.numeric</span>(category_summary),</span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">Percentage =</span> <span class="fu">round</span>(<span class="fu">as.numeric</span>(<span class="fu">prop.table</span>(category_summary)) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>)</span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2,223 × 13
+   `Customer ID`   Age Gender `Item Purchased` Category   Purchase Amount (USD…¹
+           &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;            &lt;chr&gt;                       &lt;dbl&gt;
+ 1          1678    65 Male   Jeans            Clothing                       35
+ 2          1679    41 Male   Pants            Clothing                       71
+ 3          1680    60 Male   Dress            Clothing                       52
+ 4          1681    61 Male   Shoes            Footwear                       37
+ 5          1682    24 Male   Sneakers         Footwear                       95
+ 6          1683    65 Male   Socks            Clothing                       97
+ 7          1684    23 Male   Coat             Outerwear                      57
+ 8          1685    30 Male   Shirt            Clothing                       93
+ 9          1686    33 Male   Blouse           Clothing                       48
+10          1687    22 Male   Gloves           Accessori…                     75
+# ℹ 2,213 more rows
+# ℹ abbreviated name: ¹​`Purchase Amount (USD)`
+# ℹ 7 more variables: Location &lt;chr&gt;, Size &lt;chr&gt;, Color &lt;chr&gt;, Season &lt;chr&gt;,
+#   `Subscription Status` &lt;chr&gt;, `Shipping Type` &lt;chr&gt;, Item_Category &lt;chr&gt;</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a visualization</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(category_df, <span class="fu">aes</span>(<span class="at">x =</span> Count, <span class="at">y =</span> Category, <span class="at">fill =</span> Category)) <span class="sc">+</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribution of Item Categories"</span>,</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Category"</span>,</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Count"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data-wrangling_files/figure-html/group_items-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Does season is what I think it is - the season of the item style or is it when it was purchased? One thing that came up - idk why sometimes i need to call it as Price.Paid vs <code>Price Paid</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span> <span class="fu">filter</span>(Category <span class="sc">==</span> <span class="st">"Outerwear"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 180 × 13
+   `Customer ID`   Age Gender `Item Purchased` Category  `Purchase Amount (USD)`
+           &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;            &lt;chr&gt;                       &lt;dbl&gt;
+ 1          1684    23 Male   Coat             Outerwear                      57
+ 2          1691    40 Male   Coat             Outerwear                      30
+ 3          1694    63 Male   Jacket           Outerwear                      88
+ 4          1714    49 Male   Jacket           Outerwear                      22
+ 5          1727    57 Male   Coat             Outerwear                      28
+ 6          1748    61 Male   Coat             Outerwear                      23
+ 7          1774    21 Male   Coat             Outerwear                      92
+ 8          1776    18 Male   Jacket           Outerwear                      47
+ 9          1777    56 Male   Jacket           Outerwear                      64
+10          1787    45 Male   Jacket           Outerwear                      34
+# ℹ 170 more rows
+# ℹ 7 more variables: Location &lt;chr&gt;, Size &lt;chr&gt;, Color &lt;chr&gt;, Season &lt;chr&gt;,
+#   `Subscription Status` &lt;chr&gt;, `Shipping Type` &lt;chr&gt;, Item_Category &lt;chr&gt;</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Analyze by Season</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>season_item_analysis <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a> <span class="fu">group_by</span>(Season, <span class="st">`</span><span class="at">Item Purchased</span><span class="st">`</span>) <span class="sc">|&gt;</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a> <span class="fu">summarise</span>(</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>   <span class="at">count =</span> <span class="fu">n</span>(),</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>   <span class="at">.groups =</span> <span class="st">'drop'</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a> ) <span class="sc">|&gt;</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a> <span class="fu">arrange</span>(Season, <span class="fu">desc</span>(count))</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Get top items for each season</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>top_items_by_season <span class="ot">&lt;-</span> season_item_analysis <span class="sc">|&gt;</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a> <span class="fu">group_by</span>(Season) <span class="sc">|&gt;</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a> <span class="fu">slice_max</span>(<span class="at">order_by =</span> count, <span class="at">n =</span> <span class="dv">3</span>)</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"Top 3 Most Popular Items by Season:"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Top 3 Most Popular Items by Season:"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(top_items_by_season)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 15 × 3
+# Groups:   Season [4]
+   Season `Item Purchased` count
+   &lt;chr&gt;  &lt;chr&gt;            &lt;int&gt;
+ 1 Fall   Socks               33
+ 2 Fall   Skirt               31
+ 3 Fall   Handbag             30
+ 4 Fall   Jacket              30
+ 5 Spring Sandals             32
+ 6 Spring Sweater             32
+ 7 Spring Blouse              30
+ 8 Summer Blouse              31
+ 9 Summer Dress               28
+10 Summer Jewelry             28
+11 Summer Scarf               28
+12 Summer Socks               28
+13 Winter Sunglasses          32
+14 Winter Shirt               31
+15 Winter Socks               28</code></pre>
+</div>
+</div>
+<p>Seems like the season might be impacting data not in the way that we’d expect. For now, just still treat season as an explanatory variable.</p>
 
 </main>
 <!-- /main column -->
