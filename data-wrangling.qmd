@@ -4,23 +4,38 @@ author: "Marta Sapizhak"
 format: html
 ---
 
-## Quarto
-
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
-
-## Running Code
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
-
-```{r}
-1 + 1
+```{r load_lib}
+# Loading necessary packages
+library(tidyverse)
+library(kableExtra)   # for creating nicely formatted tables in Quarto
+library(broom)        # for using augment
+library(dplyr)
+library(readr)
+library(ggplot2)
+library(car)
+library(pROC)
 ```
 
-You can add options to executable code like this 
-
-```{r}
-#| echo: false
-2 * 2
+```{r load_data}
+data <- read_csv("shopping_trends.csv")
+data
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+There are no missing values and the dataset is overall cleaned. Some of the things we need to account for to make sure we compare apples to apples are:
+
+- gender
+- items and categories
+- sales taxes
+- size
+- prices
+- season
+- subscription status + delivery type
+- discounts and coupons
+- age
+
+Cols to remove:
+- Frequency of Purchases
+- Previous Purchases
+- Preferred Payment Method
+- Payment Method
+- Review Rating
