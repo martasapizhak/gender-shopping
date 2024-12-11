@@ -18,24 +18,61 @@ library(pROC)
 
 ```{r load_data}
 data <- read_csv("shopping_trends.csv")
-data
+print(head(data))
 ```
 
 There are no missing values and the dataset is overall cleaned. Some of the things we need to account for to make sure we compare apples to apples are:
 
-- gender
-- items and categories
-- sales taxes
-- size
-- prices
-- season
-- subscription status + delivery type
-- discounts and coupons
-- age
+- gender - one of key explanatory
+- items and categories - one of key explanatory - need to group better to lower the number of categ variables
+- size - the key explanatory
+- prices - response variable? how to measure the chances that the same thing for a man will be cheaper? Multiple regression?
+- season - one of key explanatory
+- age - may be one of the further analysis explanatory.
 
-Cols to remove:
-- Frequency of Purchases
-- Previous Purchases
-- Preferred Payment Method
-- Payment Method
-- Review Rating
+```{r relevant_vars}
+nrow_before_clean <- (nrow(data))
+
+# Remove specified columns
+cols_to_remove <- c("Frequency of Purchases", "Previous Purchases", 
+                  "Preferred Payment Method", "Payment Method", 
+                  "Review Rating", "Discount Applied", "Promo Code Used")
+
+data <- data |>
+  filter(`Discount Applied` == 'No', `Promo Code Used` == "No") |>
+  select(-all_of(cols_to_remove))
+
+print(head(data))
+nrow_after_clean <- (nrow(data))
+```
+
+The sales taxes correlation was basically not significant and small enough to disregard. Similarly since gender will be similarly distributed across values, we can disregard differences in shipping prices and other things, since the information about it is limited and we expect them to be fairly even between the two genders considered in the study.
+
+```{r sales_taxes}
+# Read tax data
+tax_data <- read.csv("LOST_July_2024_Rate_Table.csv")
+
+# Clean tax data - remove % and convert to numeric
+tax_data$Combined_Rate <- as.numeric(sub("%", "", tax_data$Combined.Rate))
+
+# Calculate median prices by state
+state_prices <- data %>%
+  group_by(Location) %>%
+  summarise(
+    median_price = median(`Purchase Amount (USD)`),
+    n_transactions = n()
+  )
+
+# Merge with tax data
+comparison <- merge(state_prices, tax_data, 
+                  by.x="Location", by.y="State")
+
+# Run linear regression
+model <- lm(median_price ~ Combined_Rate, data=comparison)
+summary(model)
+```
+One thing we definitely want to account for is the different item types. To simplify the analysis we want to separate them into more categories than we are given, since those aren't thoroughly informative but at the same time we need less unique values for this categorical variable
+
+```{r}
+print(unique(data$`Item Purchased`))
+```

@@ -204,7 +204,27 @@ dbl  (5): Customer ID, Age, Purchase Amount (USD), Review Rating, Previous P...
 <li>discounts and coupons</li>
 <li>age</li>
 </ul>
-<p>Cols to remove: - Frequency of Purchases - Previous Purchases - Preferred Payment Method - Payment Method - Review Rating</p>
+<p>Cols to remove:</p>
+<ul>
+<li>Frequency of Purchases</li>
+<li>Previous Purchases</li>
+<li>Preferred Payment Method</li>
+<li>Payment Method</li>
+<li>Review Rating</li>
+</ul>
+<p>unique(data$Shipping.Type)</p>
+<section id="list-categorical-variables" class="level1">
+<h1>List categorical variables</h1>
+<p>cat_vars &lt;- c( ‘Shipping Type’)</p>
+</section>
+<section id="function-to-get-counts-and-percentages" class="level1">
+<h1>Function to get counts and percentages</h1>
+<p>get_counts &lt;- function(var) { counts &lt;- table(data[[var]]) percentages &lt;- prop.table(counts) * 100 result &lt;- data.frame( Value = names(counts), Count = as.numeric(counts), Percentage = round(as.numeric(percentages), 2) ) result &lt;- result[order(-result$Count),] return(result) }</p>
+</section>
+<section id="apply-to-each-categorical-variable" class="level1">
+<h1>Apply to each categorical variable</h1>
+<p>for(var in cat_vars) { print(paste(“===”, var, “===”)) print(get_counts(var)) }```</p>
+</section>
 
 </main>
 <!-- /main column -->
