@@ -33,6 +33,8 @@ head(raw_data) |>
   kable_styling(bootstrap_options = c("striped"))
 ```
 
+
+
 There are no missing values and the dataset is overall cleaned. Some of the things we need to account for to make sure we compare apples to apples are:
 
 - gender - one of key explanatory
@@ -41,6 +43,8 @@ There are no missing values and the dataset is overall cleaned. Some of the thin
 - prices - response variable? how to measure the chances that the same thing for a man will be cheaper? Multiple regression?
 - season - one of key explanatory
 - age - may be one of the further analysis explanatory.
+
+
 
 ```{r relevant_vars}
 #| message: false
@@ -63,9 +67,13 @@ nrow_after_clean <- (nrow(data))
 
 ```
 
+
+
 Our initial data has had `r nrow_before_clean` observations initially and after the filtering, it's `r nrow_after_clean`
 
 The sales taxes correlation was basically not significant and small enough to disregard. Similarly since gender will be similarly distributed across values, we can disregard differences in shipping prices and other things, since the information about it is limited and we expect them to be fairly even between the two genders considered in the study.
+
+
 
 ```{r sales_taxes}
 #| message: false
@@ -95,7 +103,11 @@ model <- lm(median_price ~ Combined_Rate, data=comparison)
 
 print(tidy(model)) 
 ```
+
+
 One thing we definitely want to account for is the different item types. To simplify the analysis we want to separate them into more categories than we are given, since those aren't thoroughly informative but at the same time we need less unique values for this categorical variable.
+
+
 
 ```{r group_items}
 #| message: false
@@ -146,8 +158,12 @@ ggplot(category_df, aes(x = Count, y = Category, fill = Category)) +
        y = "Count")
 ```
 
+
+
 Does season is what I think it is - the season of the item style or is it when it was purchased?
 One thing that came up - idk why sometimes i need to call it as Price.Paid vs `Price Paid`
+
+
 
 ```{r season}
 #| message: false
@@ -181,10 +197,14 @@ top_items_by_season |>
 
 ```
 
+
+
 Seems like the season might be impacting data not in the way that we'd expect. For now, just still treat season as an explanatory variable.
 
 
 Now that we have all settled - look at the data again:
+
+
 
 ```{r}
 #| message: false
@@ -194,4 +214,7 @@ Now that we have all settled - look at the data again:
 table(data$Size)
 ```
 
+
+
 Given some further inquiry, I realized that data may be more uniform than expected, which makes it hard to make predictions about confounding in terms of the price. 
+
