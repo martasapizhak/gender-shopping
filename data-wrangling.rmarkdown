@@ -1,5 +1,5 @@
 ---
-title: "Preliminary data wrangling"
+title: "Shopping Trends Gender Analysis"
 author: "Marta Sapizhak"
 format: pdf
 ---
@@ -11,15 +11,10 @@ format: pdf
 #| echo: false
 
 # Loading necessary packages
-library(tidyverse)
-library(kableExtra)   # for creating nicely formatted tables in Quarto
+library(tidyverse)    # for data manipulation and visualization
 library(broom)        # for using augment
-library(dplyr)
-library(readr)
-library(ggplot2)
-library(car)
-library(pROC)
-
+library(car)          # for calculating VIF
+library(pROC)         # for ROC analysis
 ```
 
 ```{r load_data}
@@ -27,194 +22,169 @@ library(pROC)
 #| warning: false
 #| echo: true
 
-raw_data <- read_csv("shopping_trends.csv")
-head(raw_data) |>
-  kable() |>
-  kable_styling(bootstrap_options = c("striped"))
+# Load raw data
+shopping_raw <- read_csv("shopping_trends.csv")
+
+# Display initial data
+head(shopping_raw)
 ```
 
-
-
-There are no missing values and the dataset is overall cleaned. Some of the things we need to account for to make sure we compare apples to apples are:
-
-- gender - one of key explanatory
-- items and categories - one of key explanatory - need to group better to lower the number of categ variables
-- size - the key explanatory
-- prices - response variable? how to measure the chances that the same thing for a man will be cheaper? Multiple regression?
-- season - one of key explanatory
-- age - may be one of the further analysis explanatory.
-
-
-
-```{r relevant_vars}
+```{r create_outcome}
 #| message: false
 #| warning: false
 #| echo: true
 
-nrow_before_clean <- (nrow(raw_data))
-
-# Remove specified columns
-cols_to_remove <- c("Frequency of Purchases", "Previous Purchases", 
-                  "Preferred Payment Method", "Payment Method", 
-                  "Review Rating", "Discount Applied", "Promo Code Used", 
-                  "Subscription Status", "Shipping Type")
-
-data <- raw_data |>
-  filter(`Discount Applied` == 'No', `Promo Code Used` == "No") |>
-  select(-all_of(cols_to_remove))
-
-nrow_after_clean <- (nrow(data))
-
+# Create binary outcome for gender prediction
+shopping_with_outcome <- shopping_raw |>
+  mutate(gender_binary = ifelse(Gender == "Female", 1, 0))
 ```
 
-
-
-Our initial data has had `r nrow_before_clean` observations initially and after the filtering, it's `r nrow_after_clean`
-
-The sales taxes correlation was basically not significant and small enough to disregard. Similarly since gender will be similarly distributed across values, we can disregard differences in shipping prices and other things, since the information about it is limited and we expect them to be fairly even between the two genders considered in the study.
-
-
-
-```{r sales_taxes}
-#| message: false
+```{r variable_distributions}
+#| message: false 
 #| warning: false
 #| echo: true
 
-# Read tax data
-tax_data <- read.csv("LOST_July_2024_Rate_Table.csv")
+# Select key variables
+vars_to_plot <- c("Age", "Purchase Amount (USD)", "Review Rating", "Previous Purchases")
 
-# Clean tax data - remove % and convert to numeric
-tax_data$Combined_Rate <- as.numeric(sub("%", "", tax_data$Combined.Rate))
-
-# Calculate median prices by state
-state_prices <- data |>
-  group_by(Location) |>
-  summarise(
-    median_price = median(`Purchase Amount (USD)`),
-    n_transactions = n()
-  )
-
-# Merge with tax data
-comparison <- merge(state_prices, tax_data, 
-                  by.x="Location", by.y="State")
-
-# Run linear regression
-model <- lm(median_price ~ Combined_Rate, data=comparison)
-
-print(tidy(model)) 
-```
-
-
-One thing we definitely want to account for is the different item types. To simplify the analysis we want to separate them into more categories than we are given, since those aren't thoroughly informative but at the same time we need less unique values for this categorical variable.
-
-
-
-```{r group_items}
-#| message: false
-#| warning: false
-#| echo: true
-
-# First, let's see all unique items
-unique_items <- sort(unique(data$`Item.Purchased`))
-
-# Create a function to categorize items
-categorize_items <- function(item) {
-  tops <- c("T-shirt", "Blouse", "Shirt", "Tank Top", "Sweater", "Hoodie", "Sweatshirt", "Cardigan", "Polo")
-  bottoms <- c("Pants", "Jeans", "Shorts", "Skirt", "Leggings", "Trousers")
-  full_body <- c("Dress", "Suit", "Jumpsuit", "Romper")
-  outerwear <- c("Jacket", "Coat", "Blazer", "Windbreaker")
-  accessories <- c("Belt", "Scarf", "Hat", "Cap", "Gloves", "Tie", "Socks")
-  footwear <- c("Shoes", "Boots", "Sandals", "Sneakers", "Heels")
-  bags <- c("Backpack", "Handbag", "Purse", "Wallet", "Tote")
+# Create histogram for each variable using ggplot2
+for (var in vars_to_plot) {
+  p <- ggplot(shopping_raw, aes(x = .data[[var]])) +
+    geom_histogram(bins = 30, fill = "skyblue", color = "black") +
+    labs(title = paste("Histogram of", var),
+         x = var,
+         y = "Frequency")
   
-  # Categorize
-  if(item %in% tops) return("Tops")
-  if(item %in% bottoms) return("Bottoms")
-  if(item %in% full_body) return("Full Body")
-  if(item %in% outerwear) return("Outerwear")
-  if(item %in% accessories) return("Accessories")
-  if(item %in% footwear) return("Footwear")
-  if(item %in% bags) return("Bags")
-  return("Other")
+  print(p)
 }
 
-# Apply categorization
-data$Item_Category <- sapply(data$`Item Purchased`, categorize_items)
+```
 
-# Get summary of new categories
-category_summary <- table(data$Item_Category)
-category_df <- data.frame(
-  Category = names(category_summary),
-  Count = as.numeric(category_summary),
-  Percentage = round(as.numeric(prop.table(category_summary)) * 100, 2)
+```{r gender_models}
+#| message: false
+#| warning: false
+#| echo: true
+
+# Full model with all potential predictors
+gender_full_model <- glm(gender_binary ~ 
+                     `Discount Applied` +
+                     `Promo Code Used` +
+                     `Subscription Status` +
+                     Location +
+                     `Item Purchased` +
+                     Color +
+                     `Shipping Type`,
+                     family = binomial(link = "logit"),
+                     data = shopping_with_outcome)
+
+# Perform stepwise selection
+gender_stepwise_model <- step(gender_full_model, direction = "both", trace = 0)
+
+# Get predictions using augment
+gender_stepwise_predictions <- augment(gender_stepwise_model, type.predict = "response")
+
+# Calculate ROC and AUC for stepwise model
+gender_roc_stepwise <- roc(shopping_with_outcome$gender_binary, gender_stepwise_predictions$.fitted)
+gender_auc_stepwise <- auc(gender_roc_stepwise)
+
+# Plot ROC curve using ggplot2
+ggroc(gender_roc_stepwise) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "gray") +
+  labs(title = paste("Gender Prediction ROC Curve (AUC =", round(gender_auc_stepwise, 3), ")"),
+       x = "1 - Specificity (False Positive Rate)",
+       y = "Sensitivity (True Positive Rate)")
+
+# Look at coefficients of significant predictors
+gender_coef_summary <- tidy(gender_stepwise_model) |>
+  mutate(
+    odds_ratio = exp(estimate),
+    ci_lower = exp(estimate - 1.96 * std.error),
+    ci_upper = exp(estimate + 1.96 * std.error)
+  ) |>
+  arrange(p.value)
+
+gender_coef_summary
+# Display significant coefficients
+
+gender_coef_summary 
+  #filter(p_value < 0.05) |>
+  #select(variable, coefficient, odds_ratio, ci_lower, p_value)
+```
+
+```{r interaction_model}
+#| message: false
+#| warning: false
+#| echo: true
+
+# Fit interaction model for gender prediction
+gender_interaction_model <- glm(gender_binary ~ 
+                           `Discount Applied`*`Shipping Type`,
+                           family = binomial(link = "logit"),
+                           data = shopping_with_outcome)
+
+# Get predictions for interaction model
+gender_interaction_predictions <- augment(gender_interaction_model, type.predict = "response")
+
+# Calculate ROC and metrics for interaction model
+gender_roc_interaction <- roc(shopping_with_outcome$gender_binary, gender_interaction_predictions$.fitted)
+gender_auc_interaction <- auc(gender_roc_interaction)
+
+# Calculate CIs for both models
+gender_ci_stepwise <- ci.auc(gender_roc_stepwise)
+gender_ci_interaction <- ci.auc(gender_roc_interaction)
+
+# Compare models comprehensively
+model_comparison <- tibble(
+  Metric = c("AUC", "95% CI Lower", "95% CI Upper"),
+  Stepwise = c(gender_auc_stepwise, gender_ci_stepwise[1], gender_ci_stepwise[3]),
+  Interaction = c(gender_auc_interaction, gender_ci_interaction[1], gender_ci_interaction[3])
 )
 
-ggplot(category_df, aes(x = Count, y = Category, fill = Category)) +
-  geom_bar(stat = "identity") +
-  coord_flip() +
-  theme_minimal() +
-  labs(title = "Distribution of Item Categories",
-       x = "Category",
-       y = "Count")
+# Display model comparison
+model_comparison
+
+
+# Plot ROC curves for both models using ggplot2
+ggroc(list(Stepwise = gender_roc_stepwise, Interaction = gender_roc_interaction)) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "gray") +
+  labs(title = "Gender Prediction ROC Curves Comparison",
+       x = "1 - Specificity (False Positive Rate)", 
+       y = "Sensitivity (True Positive Rate)") +
+  scale_color_manual(values = c("Stepwise" = "blue", "Interaction" = "red"))
+
+# Calculate metrics for stepwise model
+stepwise_metrics <- gender_stepwise_predictions |>
+  mutate(predicted = if_else(.fitted > 0.5, 1, 0)) |>
+  summarize(
+    Sensitivity = sum(predicted == 1 & gender_binary == 1) / sum(gender_binary == 1),
+    Specificity = sum(predicted == 0 & gender_binary == 0) / sum(gender_binary == 0),
+    Accuracy = sum(predicted == gender_binary) / n(),
+    Odds = Sensitivity / (1 - Specificity),
+    `Odds Ratio` = 1
+  )
+
+interaction_metrics <- gender_interaction_predictions |>
+  mutate(predicted = if_else(.fitted > 0.5, 1, 0)) |>
+  summarize(
+    Sensitivity = sum(predicted == 1 & gender_binary == 1) / sum(gender_binary == 1),
+    Specificity = sum(predicted == 0 & gender_binary == 0) / sum(gender_binary == 0),
+    Accuracy = sum(predicted == gender_binary) / n(),
+    Odds = Sensitivity / (1 - Specificity),
+    `Odds Ratio` = Odds / stepwise_metrics$Odds
+  )
+
+# Combine metrics into a single table
+metrics_table <- bind_rows(
+  stepwise_metrics |> mutate(Model = "Stepwise"),
+  interaction_metrics |> mutate(Model = "Interaction")
+)
+
+# Display the metrics table
+metrics_table
+
+print(gender_interaction_model)
+
+
+print(gender_stepwise_model)
+
 ```
-
-
-
-Does season is what I think it is - the season of the item style or is it when it was purchased?
-One thing that came up - idk why sometimes i need to call it as Price.Paid vs `Price Paid`
-
-
-
-```{r season}
-#| message: false
-#| warning: false
-#| echo: true
-
-head(data |> 
-  filter(Category == "Outerwear")) |> 
-  kable() |>
-  kable_styling(bootstrap_options = c("striped"))
-
-
-# Analyze by Season
-season_item_analysis <- data |>
- group_by(Season, `Item Purchased`) |>
- summarise(
-   count = n(),
-   .groups = 'drop'
- ) |>
- arrange(Season, desc(count))
-
-# Get top items for each season
-top_items_by_season <- season_item_analysis |>
- group_by(Season) |>
- slice_max(order_by = count, n = 3)
-
-top_items_by_season |>
-  kable() |>
-  kable_styling(bootstrap_options = c("striped", "hover"))
-
-
-```
-
-
-
-Seems like the season might be impacting data not in the way that we'd expect. For now, just still treat season as an explanatory variable.
-
-
-Now that we have all settled - look at the data again:
-
-
-
-```{r}
-#| message: false
-#| warning: false
-#| echo: true
-
-table(data$Size)
-```
-
-
-
-Given some further inquiry, I realized that data may be more uniform than expected, which makes it hard to make predictions about confounding in terms of the price. 
-
